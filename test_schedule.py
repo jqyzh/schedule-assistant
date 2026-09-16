@@ -7,7 +7,7 @@ import os
 import tempfile
 import unittest
 
-import database
+import database_sqlite
 from schedule import ScheduleManager
 
 
@@ -17,12 +17,12 @@ class TestScheduleManager(unittest.TestCase):
         # 造一个临时文件顶替 data.json，测试不碰真实数据
         tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".json")
         tmp.close()
-        database.DATA_FILE = tmp.name      # 把存储层指向临时文件
+        database_sqlite.DB_FILE = tmp.name      # 把存储层指向临时文件
         self.mgr = ScheduleManager()       # 雇一个"管家"，连上临时文件
         self.mgr.load()
 
     def tearDown(self):
-        os.unlink(database.DATA_FILE)      # 测试结束删掉临时文件
+        os.unlink(database_sqlite.DB_FILE)      # 测试结束删掉临时文件
 
     # ---------- 添加 ----------
     def test_add(self):
